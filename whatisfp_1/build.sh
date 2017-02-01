@@ -1,3 +1,5 @@
+export MONO_MANAGED_WATCHER="false"
+
 #!/bin/bash
 if test "$OS" = "Windows_NT"
 then
