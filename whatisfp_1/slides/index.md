@@ -1,20 +1,22 @@
-- title : FsReveal
-- description : Introduction to FsReveal
-- author : Karlkim Suwanmongkol
+- title : What is Functional Programming
+- description : Introduction to Functional Programming in .NET
+- author : Chris Jansson
 - theme : night
 - transition : default
 
 ***
 
-### What is FsReveal?
+### What is Functional Programming?
 
-- Generates [reveal.js](http://lab.hakim.se/reveal-js/#/) presentation from [markdown](http://daringfireball.net/projects/markdown/)
+- Generates nah uh[reveal.js](http://lab.hakim.se/reveal-js/#/) presentation from [markdown](http://daringfireball.net/projects/markdown/)
 - Utilizes [FSharp.Formatting](https://github.com/tpetricek/FSharp.Formatting) for markdown parsing
 - Get it from [http://fsprojects.github.io/FsReveal/](http://fsprojects.github.io/FsReveal/)
 
 ![FsReveal](images/logo.png)
 
 ***
+
+### Immutability
 
 ### Reveal.js
 
