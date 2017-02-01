@@ -6,161 +6,124 @@
 
 ***
 
-### What is Functional Programming?
+### Functional programming
+#### A brief introduction to functional concepts possibly in F#
 
-- Generates nah uh[reveal.js](http://lab.hakim.se/reveal-js/#/) presentation from [markdown](http://daringfireball.net/projects/markdown/)
-- Utilizes [FSharp.Formatting](https://github.com/tpetricek/FSharp.Formatting) for markdown parsing
-- Get it from [http://fsprojects.github.io/FsReveal/](http://fsprojects.github.io/FsReveal/)
-
-![FsReveal](images/logo.png)
+<img src="http://fsharp.org/img/logo/fsharp256.png" alt="logo" style="width: 200px;"/>
 
 ***
 
-### Immutability
+***
 
-### Reveal.js
+### So what is functional programming?
+- A programming paradigm
+- Works by evluating expressions (think of them as mathemtical functions)
+    - Is a combination of values and functions
+    - Always has a return value
 
-- A framework for easily creating beautiful presentations using HTML.
 
-
-> **Atwood's Law**: any application that can be written in JavaScript, will eventually be written in JavaScript.
+    let g(x) = x - 1
+    let f(x) = x + 2 * g(x)
 
 ***
 
-### FSharp.Formatting
+### An example
+Statement
 
-- F# tools for generating documentation (Markdown processor and F# code formatter).
-- It parses markdown and F# script file and generates HTML or PDF.
-- Code syntax highlighting support.
-- It also evaluates your F# code and produce tooltips.
-
-***
-
-### Syntax Highlighting
-
-#### F# (with tooltips)
-
-    let a = 5
-    let factorial x = [1..x] |> List.reduce (*)
-    let c = factorial a
-
----
-
-#### C#
-
-    [lang=cs]
-    using System;
-
-    class Program
+    public string Greet(string name)
     {
-        static void Main()
+        string greeting = "";
+        greeting += "Hello ";
+        greeting += name;
+        greeting += "!";
+        return greeting;
+    }
+
+
+Expression
+
+    public string Do(string name)
+    {
+        return $"Hello {name}!";
+    }
+
+' Statements does not need a return value
+' Order is important
+
+***
+
+### So what are the benefits of FP?
+- 
+
+```csharp
+    static int result;
+
+    public void LoopStatement()
+    {
+        int i;    //what is the value of i before it is used? 
+        int length;
+        var array = new int[] { 1, 2, 3 };
+        int a;  //what is the value of sum if the array is empty?
+
+        length = array.Length;   //what if I forget to assign to length?
+        for (i = 0; i < length; i++)
         {
-            Console.WriteLine("Hello, world!");
+            a += array[i];
         }
+
+        result = a;
     }
+```
 
----
-
-#### JavaScript
-
-    [lang=js]
-    function copyWithEvaluation(iElem, elem) {
-        return function (obj) {
-            var newObj = {};
-            for (var p in obj) {
-                var v = obj[p];
-                if (typeof v === "function") {
-                    v = v(iElem, elem);
-                }
-                newObj[p] = v;
-            }
-            if (!newObj.exactTiming) {
-                newObj.delay += exports._libraryDelay;
-            }
-            return newObj;
-        };
-    }
-
-
----
-
-#### Haskell
- 
-    [lang=haskell]
-    recur_count k = 1 : 1 : 
-        zipWith recurAdd (recur_count k) (tail (recur_count k))
-            where recurAdd x y = k * x + y
-
-    main = do
-      argv <- getArgs
-      inputFile <- openFile (head argv) ReadMode
-      line <- hGetLine inputFile
-      let [n,k] = map read (words line)
-      printf "%d\n" ((recur_count k) !! (n-1))
-
-*code from [NashFP/rosalind](https://github.com/NashFP/rosalind/blob/master/mark_wutka%2Bhaskell/FIB/fib_ziplist.hs)*
-
----
-
-### SQL
-
-    [lang=sql]
-    select *
-    from
-    (select 1 as Id union all select 2 union all select 3) as X
-    where Id in (@Ids1, @Ids2, @Ids3)
-
-*sql from [Dapper](https://code.google.com/p/dapper-dot-net/)*
-
----
-
-### Paket
-
-    [lang=paket]
-    source https://nuget.org/api/v2
-
-    nuget Castle.Windsor-log4net >= 3.2
-    nuget NUnit
-    
-    github forki/FsUnit FsUnit.fs
-      
----
-
-### C/AL
-
-    [lang=cal]
-    PROCEDURE FizzBuzz(n : Integer) r_Text : Text[1024];
-    VAR
-      l_Text : Text[1024];
-    BEGIN
-      r_Text := '';
-      l_Text := FORMAT(n);
-
-      IF (n MOD 3 = 0) OR (STRPOS(l_Text,'3') > 0) THEN
-        r_Text := 'Fizz';
-      IF (n MOD 5 = 0) OR (STRPOS(l_Text,'5') > 0) THEN
-        r_Text := r_Text + 'Buzz';
-      IF r_Text = '' THEN
-        r_Text := l_Text;
-    END;
+' Order of execution is important
+' Need to understand prior operations to reason about
+' Does not compose no f(g(x)), needs glue code
+' Does not trivially compose
+' Expressions and subexpressions can be individually understood
+' Declarative vs imperative
+' Focus more on what to achieve compared to telling the computer the exact steps to do them
 
 ***
 
-**Bayes' Rule in LaTeX**
+### The concept of purity
+- Pure functional programming
+- No side effects
+- Expressions are pure
 
-$ \Pr(A|B)=\frac{\Pr(B|A)\Pr(A)}{\Pr(B|A)\Pr(A)+\Pr(B|\neg A)\Pr(\neg A)} $
+```csharp
+    public int Calculate(int input) 
+    {
+        var a = 1 + input;
+        var b = Monkey(input); //Result is unused, can it be removed?
+        return a;
+    }
+```
+
+' Input and output
+' Easy to reason about
+' Easy to test
+' Explicit ordering
+' Parallelizable
+' Composable
 
 ***
 
-### The Reality of a Developer's Life 
+### So what is an FP language?
+- Some are 'purely functional' eg. Haskell
+- Some are FP first eg. OCaml
+- There isn't really such a thing as a language that does not do FP
 
-**When I show my boss that I've fixed a bug:**
-  
-![When I show my boss that I've fixed a bug](http://www.topito.com/wp-content/uploads/2013/01/code-07.gif)
-  
-**When your regular expression returns what you expect:**
-  
-![When your regular expression returns what you expect](http://www.topito.com/wp-content/uploads/2013/01/code-03.gif)
-  
-*from [The Reality of a Developer's Life - in GIFs, Of Course](http://server.dzone.com/articles/reality-developers-life-gifs)*
+' Maintaining an FP style in many languages requires a lot of effort though
+
+***
+
+### Properties of 'FP(-first)' languages
+- Expression based
+- First class functions
+    * Currying and Partial Application
+- Immutable (by default)
+- Richer type System
+- High degree of type inference
+
+***
 
