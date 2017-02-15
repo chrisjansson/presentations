@@ -123,7 +123,15 @@ Expression
     * Currying and Partial Application
 - Immutable (by default)
 - Richer type System
+    * ADTs
 - High degree of type inference
+- Works well with functions (hah)
 
 ***
 
+### Refactoring demo!
+
+***
+### To be continued?
+
+![logo](https://sergeytihon.files.wordpress.com/2014/01/i-love-f.png?w=702)
