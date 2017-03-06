@@ -1,5 +1,4 @@
 using System;
-using Utils;
 using static Utils.Maybe;
 
 namespace ConsoleApp
