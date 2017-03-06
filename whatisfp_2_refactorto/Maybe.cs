@@ -2,6 +2,12 @@ using System;
 
 namespace Utils
 {
+    public static class Maybe
+    {
+        public static Maybe<T> Some<T>(T value) => Maybe<T>.Some(value);
+        public static Maybe<T> None<T>() => Maybe<T>.None;
+    }
+
     public abstract class Maybe<T>
     {
         public static Maybe<T> Some(T value) => new SomeImpl(value);

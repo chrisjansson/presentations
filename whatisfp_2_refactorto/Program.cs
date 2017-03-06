@@ -1,5 +1,6 @@
 using System;
 using Utils;
+using static Utils.Maybe;
 
 namespace ConsoleApp
 {
@@ -7,10 +8,10 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            var r1 = Maybe<string>.Some("Hii")
+            var r1 = Some("Hii")
                 .DefaultIfNone("default value");
 
-            var r2 = Maybe<string>.None
+            var r2 = None<string>()
                 .DefaultIfNone("default value");
 
             Console.WriteLine(r1);
