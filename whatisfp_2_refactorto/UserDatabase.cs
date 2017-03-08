@@ -2,12 +2,18 @@ using System;
 
 namespace Users
 {
-    public class UserDatabase 
+
+    public class FakeDatabase : IDatabase
     {
-        public void Save(User user) 
+        public void Save(User user)
         {
-            if(user == null)
+            if (user == null)
                 throw new ArgumentNullException(nameof(user));
+        }
+    
+        public void AssertUserSaved(string username) 
+        {
+
         }
     }
 }

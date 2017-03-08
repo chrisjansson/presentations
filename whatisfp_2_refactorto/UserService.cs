@@ -6,7 +6,7 @@ namespace Users
 
     public class UserService
     {
-        private UserCreator _userCreator = new UserCreator();
+        private UserFactory _userFactory = new UserFactory();
         private IDatabase _database;
         private readonly Action<string> _log;
 
@@ -20,16 +20,16 @@ namespace Users
         {
             foreach (var userDto in users)
             {
-                var user = _userCreator.Create(userDto.Username, userDto.Email);
-                if (_userCreator.Success)
+                var user = _userFactory.Create(userDto.Username, userDto.Email);
+                if (_userFactory.Success)
                 {
-                    _userDatabase.Save(user);
+                    _database.Save(user);
                     _log($"User created {user.Username}");
                 }
                 else
                 {
                     _log($"User could not be created");
-                    foreach (var error in _userCreator.Errors)
+                    foreach (var error in _userFactory.Errors)
                     {
                         _log(error);
                     }

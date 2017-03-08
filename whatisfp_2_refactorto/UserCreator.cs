@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 
 namespace Users
 {
-    public class UserCreator
+    public class UserFactory
     {
         private const int MinimumUsernameLength = 5;
 
-        public UserCreator()
+        public UserFactory()
         {
             Success = false;
             Errors = new List<string>();
