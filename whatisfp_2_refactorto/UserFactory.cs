@@ -8,7 +8,7 @@ namespace Users
 
         public UserFactory()
         {
-            Success = false;
+            Success = true;
             Errors = new List<string>();
         }
 
