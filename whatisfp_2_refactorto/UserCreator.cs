@@ -7,7 +7,7 @@ namespace Users
     {
         private const int MinimumUsernameLength = 5;
 
-        public UserCreator(Func<string, User> getUserByName)
+        public UserCreator()
         {
             Success = false;
             Errors = new List<string>();
