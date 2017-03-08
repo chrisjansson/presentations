@@ -15,6 +15,7 @@ namespace Utils
         }
 
         public abstract Result<TOut, TError> Map<TOut>(Func<TResult, TOut> map);
+        public abstract void Execute(Action<TResult> onOk, Action<TError> onError);
 
         private class OkImpl : Result<TResult, TError>
         {
@@ -24,11 +25,16 @@ namespace Utils
             {
                 _value = value;
             }
-        
+
             public override Result<TOut, TError> Map<TOut>(Func<TResult, TOut> map)
             {
                 var result = map(_value);
                 return Result<TOut, TError>.Ok(result);
+            }
+
+            public override void Execute(Action<TResult> onOk, Action<TError> onError)
+            {
+                onOk(_value);
             }
         }
 
@@ -44,6 +50,11 @@ namespace Utils
             public override Result<TOut, TError> Map<TOut>(Func<TResult, TOut> map)
             {
                 return Result<TOut, TError>.Error(_error);
+            }
+
+            public override void Execute(Action<TResult> onOk, Action<TError> onError)
+            {
+                onError(_error);
             }
         }
     }
