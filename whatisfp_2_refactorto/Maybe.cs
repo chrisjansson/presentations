@@ -6,6 +6,16 @@ namespace Utils
     {
         public static Maybe<T> Some<T>(T value) => Maybe<T>.Some(value);
         public static Maybe<T> None<T>() => Maybe<T>.None;
+    
+        public static Maybe<T> ToMaybe<T>(T value) where T : class 
+        {
+            if(value == null)
+            {
+                return None<T>();
+            }
+
+            return Some(value);
+        }
     }
 
     public abstract class Maybe<T>
