@@ -7,7 +7,7 @@ namespace Utils
         public static Maybe<T> Some<T>(T value) => Maybe<T>.Some(value);
         public static Maybe<T> None<T>() => Maybe<T>.None;
 
-        public static Maybe<T> ToMaybe<T>(T value) where T : class
+        public static Maybe<T> ToMaybe<T>(this T value) where T : class
         {
             if (value == null)
             {
@@ -24,6 +24,13 @@ namespace Utils
                 .Map(a2 => map2(a1, a2)))
             .DefaultIfNone(Maybe.None<U>());
         }
+
+        public static Result<TResult, TError> AsResult<TResult, TError>(this Maybe<TResult> source, TError errorIfNone)
+        {
+            return source
+                .Map(x => Result<TResult, TError>.Ok(x))
+                .DefaultIfNone(Result<TResult, TError>.Error(errorIfNone));
+        }
     }
 
     public abstract class Maybe<T>
@@ -35,6 +42,8 @@ namespace Utils
         public abstract Maybe<U> Map<U>(Func<T, U> map);
 
         public abstract T DefaultIfNone(T def);
+
+        public abstract void Execute(Action<T> onSome, Action onError);
 
         private Maybe() { }
 
@@ -50,6 +59,11 @@ namespace Utils
             public override Maybe<U> Map<U>(Func<T, U> map) => Maybe<U>.Some(map(_value));
 
             public override T DefaultIfNone(T _) => _value;
+
+            public override void Execute(Action<T> onSome, Action onError)
+            {
+                onSome(_value);
+            }
         }
 
         private class NoneImpl : Maybe<T>
@@ -57,6 +71,11 @@ namespace Utils
             public override Maybe<U> Map<U>(Func<T, U> map) => Maybe<U>.None;
 
             public override T DefaultIfNone(T value) => value;
+
+            public override void Execute(Action<T> onSome, Action onError)
+            {
+                onError();
+            }
         }
     }
 }
