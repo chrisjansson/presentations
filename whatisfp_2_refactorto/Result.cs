@@ -9,12 +9,11 @@ namespace Utils
             Result<T2, TE> r2,
             Func<T1, T2, Result<TR, TE>> f)
         {
-            return r1.Map(a1 => r2.Map(a2 => f(a1, a2)))
-                .Fold<Result<TR, TE>>(
-                    r => r.Fold(
-                        rInner => rInner, 
-                        e => Result<TR, TE>.Error(e)), 
-                    e => Result<TR, TE>.Error(e));
+            return r1.Fold(
+                a1 => r2.Fold(
+                    a2 => f(a1, a2), 
+                    e2 => Result<TR, TE>.Error(e2)),
+                e1 => Result<TR, TE>.Error(e1));
         }
     }
 
