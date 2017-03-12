@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Users;
 
 namespace Utils
 {
@@ -11,9 +14,24 @@ namespace Utils
         {
             return r1.Fold(
                 a1 => r2.Fold(
-                    a2 => f(a1, a2), 
+                    a2 => f(a1, a2),
                     e2 => Result<TR, TE>.Error(e2)),
                 e1 => Result<TR, TE>.Error(e1));
+        }
+
+        public static Result<TR, IEnumerable<TE>> Validate<TR, TE>(TR value, params Func<TR, Maybe<TE>>[] validators)
+        {
+            var errors = validators
+                .Select(x => x(value))
+                .Select(x => x.Map(e => new[] { e }))
+                .SelectMany(x => x.DefaultIfNone(Array.Empty<TE>()))
+
+            if (errors.Any())
+            {
+                return Result<TR, IEnumerable<TE>>.Error(errors);
+            }
+
+            return Result<TR, IEnumerable<TE>>.Ok(value);
         }
     }
 
@@ -30,6 +48,8 @@ namespace Utils
         }
 
         public abstract Result<TOut, TError> Map<TOut>(Func<TResult, TOut> map);
+
+        public abstract Result<TOut, TError> Bind<TOut>(Func<TResult, Result<TOut, TError>> f);
 
         public abstract void Execute(Action<TResult> onOk, Action<TError> onError);
 
@@ -59,6 +79,11 @@ namespace Utils
             {
                 return onOk(_value);
             }
+
+            public override Result<TOut, TError> Bind<TOut>(Func<TResult, Result<TOut, TError>> f)
+            {
+                return f(_value);
+            }
         }
 
         private class ErrorImpl : Result<TResult, TError>
@@ -82,7 +107,12 @@ namespace Utils
 
             public override TOut Fold<TOut>(Func<TResult, TOut> onOk, Func<TError, TOut> onError)
             {
-                return onError(_value);
+                return onError(_error);
+            }
+
+            public override Result<TOut, TError> Bind<TOut>(Func<TResult, Result<TOut, TError>> f)
+            {
+                return Result<TOut, TError>.Error(_error);
             }
         }
     }
