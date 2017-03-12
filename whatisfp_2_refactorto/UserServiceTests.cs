@@ -4,12 +4,12 @@ using Xunit.Abstractions;
 
 namespace Tests
 {
-    public class UnitTest1
+    public class UserServiceTests
     {
         private UserService _userService;
         private FakeDatabase _fakeDatabase;
 
-        public UnitTest1(ITestOutputHelper output)
+        public UserServiceTests(ITestOutputHelper output)
         {
             _fakeDatabase = new FakeDatabase();
             _userService = new UserService(l => output.WriteLine(l), _fakeDatabase);
@@ -26,6 +26,7 @@ namespace Tests
 
         [Theory]
         [InlineData("user")]
+        [InlineData(null)]
         public void Does_not_import_user_with_invalid_username(string username)
         {
             ImportUsers(User(username, "some@email.com"));
@@ -41,8 +42,6 @@ namespace Tests
 
             _fakeDatabase.AssertUserNotSaved("username");
         }
-
-        #region multiuser
 
         [Fact]
         public void Imports_multiple_users()
@@ -76,8 +75,6 @@ namespace Tests
             _fakeDatabase.AssertUserSaved("username");
             _fakeDatabase.AssertUserNotSaved("user");
         }
-
-        #endregion
 
         private UserDto User(string username, string email)
         {
