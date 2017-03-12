@@ -24,7 +24,7 @@ namespace Utils
             var errors = validators
                 .Select(x => x(value))
                 .Select(x => x.Map(e => new[] { e }))
-                .SelectMany(x => x.DefaultIfNone(Array.Empty<TE>()))
+                .SelectMany(x => x.DefaultIfNone(Array.Empty<TE>()));
 
             if (errors.Any())
             {
