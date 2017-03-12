@@ -20,13 +20,6 @@ namespace Users
         {
             foreach (var userDto in users)
             {
-                var username = userDto.Username
-                    .ToMaybe()
-                    .AsResult("Username cannot be null");
-                var email = userDto.Email
-                    .ToMaybe()
-                    .AsResult("Email cannot be null");
-
                 EnsureParameters(userDto)
                     .Bind(dto => _userFactory.Create(dto.Username, dto.Email))
                     .Execute(user => Save(user), errors => Log(errors));
