@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Utils;
 
 namespace Users
 {
@@ -7,25 +6,37 @@ namespace Users
     {
         private const int MinimumUsernameLength = 5;
 
-        public Result<User, IEnumerable<string>> Create(string username, string email)
+        public UserFactory()
         {
-            return Result
-                .Validate((username, email), ValidateUsername, ValidateEmail)
-                .Map(v => new User
-                {
-                    Username = v.Item1,
-                    Email = v.Item2
-                });
+            Success = true;
+            Errors = new List<string>();
         }
 
-        private static Maybe<string> ValidateEmail((string, string email) x)
+        public User Create(string username, string email)
         {
-            return !x.email.Contains("@") ? "Email must contain a @".ToMaybe() : Maybe<string>.None;
+            if (username.Length < MinimumUsernameLength)
+            {
+                Success = false;
+                Errors.Add("Username must be atleast 5 characters");
+                return null;
+            }
+
+            if (!email.Contains("@"))
+            {
+                Errors.Add("Email must contain a @");
+                return null;
+                Success = false;
+            }
+
+            return new User
+            {
+                Username = username,
+                Email = email
+            };
         }
 
-        private static Maybe<string> ValidateUsername((string username, string) x)
-        {
-            return x.username.Length < MinimumUsernameLength ? "Username must be atleast 5 characters".ToMaybe() : Maybe<string>.None;
-        }
+        public bool Success { get; private set; }
+
+        public List<string> Errors { get; private set; }
     }
 }
